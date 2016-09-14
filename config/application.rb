@@ -30,6 +30,11 @@ module VideoTrimmerApi
 
     config.generators do |g|
       g.orm :mongoid
+      g.test_framework :rspec, fixture: true, views: false, helpers: false
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+      g.helper false
+      g.assets false
+      g.decorator false
     end
   end
 end

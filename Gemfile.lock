@@ -58,7 +58,13 @@ GEM
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.2.5)
     erubis (2.7.0)
+    factory_girl (4.7.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.7.0)
+      factory_girl (~> 4.7.0)
+      railties (>= 3.0.0)
     ffi (1.9.14)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
@@ -117,6 +123,23 @@ GEM
       ffi (>= 0.5.0)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
+    rspec-core (3.5.2)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-rails (3.5.1)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
     simple_token_authentication (1.14.0)
       actionmailer (>= 3.2.6, < 6)
       actionpack (>= 3.2.6, < 6)
@@ -154,10 +177,12 @@ PLATFORMS
 DEPENDENCIES
   byebug
   devise
+  factory_girl_rails
   listen (~> 3.0.5)
   mongoid!
   puma (~> 3.0)
   rails (~> 5.0.0, >= 5.0.0.1)
+  rspec-rails (~> 3.5)
   simple_token_authentication (~> 1.0)
   spring
   spring-watcher-listen (~> 2.0.0)
