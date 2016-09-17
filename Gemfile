@@ -9,6 +9,9 @@ gem 'versionist'
 gem 'state_machine'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem 'streamio-ffmpeg'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
