@@ -2,10 +2,10 @@
 
 class MovieUploader < CarrierWave::Uploader::Base
   include CarrierWave::VideoConverter
+  include ::CarrierWave::Backgrounder::Delay
 
   storage :file
   process :encode_video => [:mp4]
-  before :cache, :change_model_state
   before :store, :set_duration
 
   private
@@ -16,10 +16,6 @@ class MovieUploader < CarrierWave::Uploader::Base
 
   def extension_white_list
     %w(mp4 webm)
-  end
-
-  def change_model_state(file)
-    model.process!
   end
 
   def set_duration(file)
