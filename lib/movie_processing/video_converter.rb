@@ -24,7 +24,9 @@ module CarrierWave
           custom: %W(-ss #{model.start_time.strftime('%H:%M:%S')} -to #{model.end_time.strftime('%H:%M:%S')})
       }
       ffmpeg_movie = FFMPEG::Movie.new(tmp_path)
-      ffmpeg_movie.transcode(current_path, transcoding_options) { |progress| puts "Write process to Redis: #{progress * 100}%" }
+      ffmpeg_movie.transcode(current_path, transcoding_options) do |progress|
+        $redis.set(model.id, { progress: progress }.to_json)
+      end
 
       fixed_name = File.basename(current_path, '.*') + "." + format.to_s
       File.rename(File.join(directory, fixed_name), current_path)
