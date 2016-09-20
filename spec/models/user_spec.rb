@@ -1,7 +1,7 @@
-describe User do
+require 'rails_helper'
+
+RSpec.describe User do
   subject { create(:user) }
 
-  context 'ActiveRecord associations' do
-    it { is_expected.to have_many(:movies) }
-  end
+  it { is_expected.to have_many(:movies) }
 end
