@@ -6,7 +6,7 @@ class Movie
   field :file_tmp,    type: String
   field :start_time,  type: Time
   field :end_time,    type: Time
-  field :duration,    type: Time
+  field :duration,    type: Float, default: 0
 
   mount_uploader :file, MovieUploader
   store_in_background :file, ProcessMovieWorker

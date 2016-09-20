@@ -4,30 +4,30 @@ module V1
     before_action :set_movie, only: [:show, :update, :destroy]
 
     def index
-      @movies = Movie.all
+      @movies = current_user.movies
 
-      render json: @movies
+      render json: serialize_models(@movies, namespace: Api::V1)
     end
 
     def show
-      render json: @movie
+      render json: serialize_model(@movie, namespace: Api::V1)
     end
 
     def create
       @movie = Movie.new(movie_params)
 
       if @movie.save
-        render json: @movie, status: :created, location: @movie
+        render json: serialize_model(@movie, namespace: Api::V1), status: :created
       else
-        render json: @movie.errors, status: :unprocessable_entity
+        render json: serialize_errors(@movie.errors), status: :unprocessable_entity
       end
     end
 
     def update
       if @movie.update(movie_params)
-        render json: @movie
+        render json: serialize_model(@movie, namespace: Api::V1), status: :created
       else
-        render json: @movie.errors, status: :unprocessable_entity
+        render json: serialize_errors(@movie.errors), status: :unprocessable_entity
       end
     end
 
@@ -41,7 +41,7 @@ module V1
     end
 
     def movie_params
-      params.require(:movie).permit(:start_time, :end_time)
+      params.require(:movie).permit(:start_time, :end_time, :file)
     end
   end
 end

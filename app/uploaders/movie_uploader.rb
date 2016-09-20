@@ -20,5 +20,6 @@ class MovieUploader < CarrierWave::Uploader::Base
 
   def set_duration(file)
     model.duration = FFMPEG::Movie.new(current_path).duration
+    model.save!
   end
 end

@@ -14,6 +14,7 @@ gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'carrierwave_backgrounder'
 gem 'sidekiq'
 gem 'redis'
+gem 'jsonapi-serializers'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -27,7 +28,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.5'
   gem 'rspec-its'
-  gem 'shoulda-matchers', require: nil
+  gem 'mongoid-rspec'
   gem 'factory_girl_rails'
   gem 'faker'
 end
