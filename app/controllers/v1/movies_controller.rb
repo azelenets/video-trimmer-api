@@ -9,7 +9,7 @@ module V1
     end
 
     def show
-      render json: serialize_model(@movie, namespace: Api::V1)
+      render json: serialize_model(@movie, namespace: V1)
     end
 
     def create
