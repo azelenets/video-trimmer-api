@@ -4,6 +4,7 @@ class ProcessMovieWorker < ::CarrierWave::Workers::StoreAsset
     @movie = constantized_resource.find(id)
     @movie.process!
     super(*args)
+    @movie.reload
     @movie.done!
   rescue Exception => e
     @movie.fails!

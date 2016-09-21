@@ -6,7 +6,6 @@ class MovieUploader < CarrierWave::Uploader::Base
 
   storage :file
   process :encode_video => [:mp4]
-  before :store, :set_duration
 
   private
 
@@ -16,10 +15,5 @@ class MovieUploader < CarrierWave::Uploader::Base
 
   def extension_white_list
     %w(mp4 webm)
-  end
-
-  def set_duration(file)
-    model.duration = FFMPEG::Movie.new(current_path).duration
-    model.save!
   end
 end

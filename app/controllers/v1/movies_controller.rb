@@ -5,7 +5,7 @@ module V1
     def index
       @movies = current_user.movies
 
-      render json: serialize_models(@movies, namespace: ::V1)
+      render json: serialize_models(@movies, namespace: V1)
     end
 
     def show
