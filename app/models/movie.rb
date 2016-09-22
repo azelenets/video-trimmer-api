@@ -8,11 +8,14 @@ class Movie
   field :end_time,    type: Time
   field :duration,    type: Float
 
-  mount_uploader :file, MovieUploader
+  mount_uploader :file, MovieUploader, validate_integrity: true, validate_processing: true, validate_download: true
   store_in_background :file, ProcessMovieWorker
 
+  validates :file_tmp,   presence: true, unless: :file
+  validates :file,       presence: true, unless: :file_tmp
   validates :start_time, presence: true
   validates :end_time,   presence: true
+  validate  :end_time_greater_than_start_time
 
   state_machine initial: :scheduled do
     before_transition processing: :done do |movie, transition|
@@ -29,5 +32,13 @@ class Movie
     event(:process) { transition %i(scheduled failed) => :processing }
     event(:done) { transition :processing => :done }
     event(:fails) { transition any => :failed }
+  end
+
+  private
+
+  def end_time_greater_than_start_time
+    if (start_time && end_time) &&  start_time > end_time
+      errors.add(:start_time, "can't be greater than end time")
+    end
   end
 end

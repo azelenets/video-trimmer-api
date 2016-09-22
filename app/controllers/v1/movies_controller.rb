@@ -13,10 +13,10 @@ module V1
     end
 
     def create
-      @movie = Movie.new(movie_params)
+      @movie = current_user.movies.new(movie_params)
 
       if @movie.save
-        render json: serialize_model(@movie, namespace: Api::V1), status: :created
+        render json: serialize_model(@movie, namespace: V1), status: :created
       else
         render json: serialize_errors(@movie.errors), status: :unprocessable_entity
       end
@@ -24,7 +24,7 @@ module V1
 
     def update
       if @movie.update(movie_params)
-        render json: serialize_model(@movie, namespace: Api::V1), status: :created
+        render json: serialize_model(@movie, namespace: V1), status: :created
       else
         render json: serialize_errors(@movie.errors), status: :unprocessable_entity
       end
