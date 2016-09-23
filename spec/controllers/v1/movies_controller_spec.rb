@@ -146,6 +146,26 @@ RSpec.describe V1::MoviesController do
         end
       end
     end
+
+    describe '#destroy' do
+      context 'success' do
+        it 'responds with created status' do
+          process :destroy, method: :delete,
+                  params: { user_email: user.email, user_token: user.authentication_token, id: movie.id.to_s }
+          expect_status(:no_content)
+        end
+      end
+
+      context 'errors' do
+        it 'responds with not found status' do
+          process :destroy, method: :delete,
+                  params: { user_email: user.email, user_token: user.authentication_token, id: 'nonexistent-record-id' }
+          expect_status(:not_found)
+          expect_json_types(errors: :array_of_objects)
+          expect_json('errors.?', detail: 'Document(s) not found for class Movie with id(s) nonexistent-record-id.')
+        end
+      end
+    end
   end
 
   context 'auth via headers' do
@@ -283,6 +303,24 @@ RSpec.describe V1::MoviesController do
           expect_json_types('errors.?.source', pointer: :string)
           expect_json('errors.?', detail: "State cannot transition via \"restart\"")
           expect_json('errors.?.source', pointer: '/data/attributes/state')
+        end
+      end
+    end
+
+    describe '#destroy' do
+      context 'success' do
+        it 'responds with created status' do
+          process :destroy, method: :delete, params: { id: movie.id.to_s }
+          expect_status(:no_content)
+        end
+      end
+
+      context 'errors' do
+        it 'responds with not found status' do
+          process :destroy, method: :delete, params: { id: 'nonexistent-record-id' }
+          expect_status(:not_found)
+          expect_json_types(errors: :array_of_objects)
+          expect_json('errors.?', detail: 'Document(s) not found for class Movie with id(s) nonexistent-record-id.')
         end
       end
     end
