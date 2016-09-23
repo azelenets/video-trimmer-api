@@ -29,9 +29,10 @@ class Movie
     end
     state :failed,      value: 3
 
-    event(:process) { transition %i(scheduled failed) => :processing }
+    event(:process) { transition :scheduled => :processing }
     event(:done) { transition :processing => :done }
     event(:fails) { transition any => :failed }
+    event(:restart) { transition :failed => :scheduled, do: :restart_file_processing }
   end
 
   private
@@ -40,5 +41,9 @@ class Movie
     if (start_time && end_time) &&  start_time > end_time
       errors.add(:start_time, "can't be greater than end time")
     end
+  end
+
+  def restart_file_processing
+    file.recreate_versions!
   end
 end

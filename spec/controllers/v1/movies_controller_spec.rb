@@ -110,6 +110,42 @@ RSpec.describe V1::MoviesController do
         end
       end
     end
+
+    describe '#update (restart)' do
+      let(:failed_movie) { create(:movie, user: user, state: Movie.state_machine.states[:failed].value) }
+
+      context 'success' do
+        it 'responds with created status and have correct data types/values' do
+          process :update, method: :put,
+                  params: { user_email: user.email, user_token: user.authentication_token, id: failed_movie.id.to_s }
+          expect_status(:created)
+          expect_json_types(data: :object)
+          expect_json_types('data', type: :string, id: :string, attributes: :object, links: :object)
+          expect_json_types('data.attributes', state: :string, 'start-time': :string, 'end-time': :string, duration: :null, file: :null)
+          expect_json_types('data.links', self: :string)
+          expect_json('data.attributes',
+                      state:        'scheduled',
+                      'start-time': failed_movie.start_time.strftime('%H:%M:%S'),
+                      'end-time':   failed_movie.end_time.strftime('%H:%M:%S'),
+                      duration:     nil,
+                      file:         nil)
+          expect_json('data.links', self: v1_movie_path(failed_movie))
+        end
+      end
+
+      context 'errors' do
+        it 'responds with created status and have correct data types/values' do
+          process :update, method: :put,
+                  params: { user_email: user.email, user_token: user.authentication_token, id: movie.id.to_s }
+          expect_status(:unprocessable_entity)
+          expect_json_types(errors: :array_of_objects)
+          expect_json_types('errors.*', source: :object, detail: :string)
+          expect_json_types('errors.?.source', pointer: :string)
+          expect_json('errors.?', detail: "State cannot transition via \"restart\"")
+          expect_json('errors.?.source', pointer: '/data/attributes/state')
+        end
+      end
+    end
   end
 
   context 'auth via headers' do
@@ -213,6 +249,40 @@ RSpec.describe V1::MoviesController do
           expect_json_types('errors.?.source', pointer: :string)
           expect_json('errors.?', detail: "Start time can't be greater than end time")
           expect_json('errors.?.source', pointer: '/data/attributes/start-time')
+        end
+      end
+    end
+
+    describe '#update (restart)' do
+      let(:failed_movie) { create(:movie, user: user, state: Movie.state_machine.states[:failed].value) }
+
+      context 'success' do
+        it 'responds with created status and have correct data types/values' do
+          process :update, method: :put, params: { id: failed_movie.id.to_s }
+          expect_status(:created)
+          expect_json_types(data: :object)
+          expect_json_types('data', type: :string, id: :string, attributes: :object, links: :object)
+          expect_json_types('data.attributes', state: :string, 'start-time': :string, 'end-time': :string, duration: :null, file: :null)
+          expect_json_types('data.links', self: :string)
+          expect_json('data.attributes',
+                      state:        'scheduled',
+                      'start-time': failed_movie.start_time.strftime('%H:%M:%S'),
+                      'end-time':   failed_movie.end_time.strftime('%H:%M:%S'),
+                      duration:     nil,
+                      file:         nil)
+          expect_json('data.links', self: v1_movie_path(failed_movie))
+        end
+      end
+
+      context 'errors' do
+        it 'responds with created status and have correct data types/values' do
+          process :update, method: :put, params: { id: movie.id.to_s }
+          expect_status(:unprocessable_entity)
+          expect_json_types(errors: :array_of_objects)
+          expect_json_types('errors.*', source: :object, detail: :string)
+          expect_json_types('errors.?.source', pointer: :string)
+          expect_json('errors.?', detail: "State cannot transition via \"restart\"")
+          expect_json('errors.?.source', pointer: '/data/attributes/state')
         end
       end
     end

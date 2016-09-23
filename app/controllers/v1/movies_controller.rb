@@ -23,7 +23,7 @@ module V1
     end
 
     def update
-      if @movie.update(movie_params)
+      if @movie.restart
         render json: serialize_model(@movie, namespace: V1), status: :created
       else
         render json: serialize_errors(@movie.errors), status: :unprocessable_entity
