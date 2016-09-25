@@ -4,6 +4,6 @@ module V1
     attribute(:start_time) { object.start_time.strftime('%H:%M:%S') }
     attribute(:end_time) { object.end_time.strftime('%H:%M:%S') }
     attribute(:duration)
-    attribute(:file) { object.file.url }
+    attribute(:file) { object.file.url if object.state_name == :done }
   end
 end

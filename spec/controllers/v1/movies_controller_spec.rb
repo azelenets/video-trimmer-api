@@ -60,14 +60,15 @@ RSpec.describe V1::MoviesController do
           expect_status(:created)
           expect_json_types(data: :object)
           expect_json_types('data', type: :string, id: :string, attributes: :object, links: :object)
-          expect_json_types('data.attributes', state: :string, 'start-time': :string, 'end-time': :string, duration: :null, file: :string)
+          expect_json_types('data.attributes', state: :string, 'start-time': :string, 'end-time': :string, duration: :null, file: :null)
           expect_json_types('data.links', self: :string)
           movie = Movie.last
           expect_json('data.attributes',
                       state: 'scheduled',
                       'start-time': '00:00:01',
                       'end-time': '00:00:06',
-                      duration: nil)
+                      duration: nil,
+                      file: nil)
           expect_json('data.links', self: v1_movie_path(movie))
         end
       end
@@ -226,14 +227,15 @@ RSpec.describe V1::MoviesController do
           expect_status(:created)
           expect_json_types(data: :object)
           expect_json_types('data', type: :string, id: :string, attributes: :object, links: :object)
-          expect_json_types('data.attributes', state: :string, 'start-time': :string, 'end-time': :string, duration: :null, file: :string)
+          expect_json_types('data.attributes', state: :string, 'start-time': :string, 'end-time': :string, duration: :null, file: :null)
           expect_json_types('data.links', self: :string)
           movie = Movie.last
           expect_json('data.attributes',
                       state: 'scheduled',
                       'start-time': '00:00:01',
                       'end-time': '00:00:06',
-                      duration: nil)
+                      duration: nil,
+                      file: nil)
           expect_json('data.links', self: v1_movie_path(movie))
         end
       end
