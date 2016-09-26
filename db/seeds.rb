@@ -5,3 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+user = User.create(email: 'test@test.com', password: '12345678')
+
+movie = user.movies.build
+movie.start_time = '00:00:09'
+movie.end_time = '00:00:19'
+movie.file = File.open("#{Rails.root.join('tmp', 'dream_trailer.mp4')}")
+movie.save!
